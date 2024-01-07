@@ -1,18 +1,18 @@
-#start-btn {
-    width: 40%;
+body{
+    color: rgb(0, 0, 0);
+    background:rgb(250, 225, 202);
+    font-size: x-large;
 }
-
-#camera {
-    width: 360px;
-    height: 250px;
-    border: 1px solid grey;
+.heading{
+    color: rgb(10, 0, 70, 25);
+    width: 80%;
+    font-size: 80px;
 }
-
-#logo_img {
-    width: 150px;
-    border-radius: 100px;
+.name_of_objects{
+    color: rgb(2, 2, 83);
 }
-
-#textbox {
-    width: 300px;
+#camera{
+    border: 2px dashed black;
+    width: 350px;
+    height: 300px;
 }

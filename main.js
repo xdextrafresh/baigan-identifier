@@ -1,52 +1,37 @@
-var SpeechRecognition = window.webkitSpeechRecognition;
-var recognition = new SpeechRecognition();
-var Textbox = document.getElementById("textbox");
-
-function start() {
-    Textbox.innerHTML="";
-    recognition.start();
-}
-
-recognition.onresult = function (event) {
-    console.log(event);
-    var Content = event.results[0][0].transcipt;
-    document.getElementById("textbox").innerHTML = Content;
-    Console.log(Content);
-    if (Content == "take my selfie") {
-        console.log("taking selfie --- ");
-        speak();
-    }
-}
-
-function speak() {
-    var synth = window.speechSynthesis
-    speak_data = "taking your selfie in 5 seconds";
-    var utterthis = new speechSynthesis(speak_data);
-    synth.speak(utterthis);
-    Webcam.attach(camera);
-    setTimeout(function () {
-        take_snapshot();
-        save();
-    }, 5000);
-}
+Webcam.attach('#camera');
+camera = document.getElementById("camera");
 
 Webcam.set({
-    width: 360,
-    height: 250,
+    width: 350,
+    height: 300,
     image_format: 'png',
     png_quality: 90
 });
-camera = document.getElementById("camera");
 
 function take_snapshot() {
-    webcam.snap(function (data_url) {
-        document.getElementById("result").innerHTML = '<img id="selfie_image" src="' + data_url + '">'
+    Webcam.snap(function(data_uri) {
+        document.getElementById("result").innerHTML = '<img id = "captured_image" src="' + data_uri + '"/>';
     });
 }
 
-function save() {
-    link = document.getElementById("link");
-    image = document.getElementById("selfie_image").src;
-    link.href = image;
-    link.click();
+console.log('ml5 version : ', ml5.version);
+
+classifier = ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/v_sl95BzE/model.json', modelLoaded);
+
+function modelLoaded(){
+    console.log('modelLoaded');
+}
+function check(){
+    img = document.getElementById('captured_image');
+    classifier.classify(img, gotResult);
+}
+
+function gotResult(error, results){
+    if (error){
+        console.error(error);
+    } else{
+        console.log(results);
+        document.getElementById("result_object_name").innerHTML = results[0].label;
+        document.getElementById("result_object_accuracy").innerHTML = results[0].confidence.toFixed(3);
+    }
 }
